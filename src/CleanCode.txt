@@ -1,0 +1,153 @@
+1.
+        // переводим строки в массив целых чисел
+        for (int i = 0; i < S1_LENGTH; i++) {
+            number1[i] = s1.charAt(S1_LENGTH - 1 - i) - '0';
+        }
+
+2.
+        // определяем какое из двух чисел больше
+        int x = S1_LENGTH - 1;
+        while (S1_LENGTH == S2_LENGTH) {
+            if (number1[x] == number2[x]) {
+                x--;
+            } else if (number1[x] > number2[x]) {
+                biggerNumber = number1;
+                smallerNumber = number2;
+                break;
+            } else {
+                biggerNumber = number2;
+                smallerNumber = number1;
+                break;
+            }
+
+            if (x == -1) {
+                return String.valueOf(0);
+            }
+        }
+
+3.
+        // производим вычитание меньшего из большего
+        for (int i = 0; i < MAX_LENGTH; i++) {
+            if (biggerNumber[i] < smallerNumber[i]) {
+                biggerNumber[i] += 10;
+                biggerNumber[i + 1]--;
+            }
+
+            biggerNumber[i] -= smallerNumber[i];
+        }
+
+4.
+        // считаем количество нулей в начале числа,
+        // чтобы игнорировать их при конвертации в строку
+        int y = 0;
+        while (biggerNumber[MAX_LENGTH - 1 - y] == 0) {
+            y++;
+        }
+
+5.
+        // проверка наличия кандидата с таким же максимальным количеством голосов
+        for (int i : ballot) {
+            if (i == maxVotesPerPerson) {
+                return win3;
+            }
+        }
+
+6.
+        // вычисляем процент голосов за победителя с точностью до 3 знаков
+        assert (sumOfAllVotes != 0);
+        double votingResult = maxVotesPerPerson / sumOfAllVotes * 100 * 1000;
+        double rezTmp = Math.round(votingResult);
+        votingResult = rezTmp / 1000;
+
+7.
+        // считаем максимальную скидку (каждый 3 товар бесплатно)
+        int discount = 0;
+        for (int i = 2; i < n; i += 3) {
+            discount += sortedPrice[i];
+        }
+
+8.
+        // разделяем строку на название товара + количество
+        for (int i = 0; i < n; i++) {
+            int ind = items[i].indexOf(" ");
+
+            product[i] = items[i].substring(0, ind);
+
+            String s = items[i].substring(ind + 1);
+            number[i] = Integer.parseInt(s);
+        }
+
+9.
+        // находим одинаковые товары и суммируем их количество
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (number[i] == -1) continue;
+
+            for (int j = i + 1; j < n; j++) {
+                if (product[i].equals(product[j])) {
+                    number[i] = number[i] + number[j];
+
+                    number[j] = -1;
+                    product[j] = "";
+                }
+            }
+
+            count++;
+        }
+
+10.
+        // сортируем товары по количеству по убыванию,
+        // если количество товаров одинаковое,
+        // сортируем по названию в порядке лексикографического возрастания
+        for (int i = 0; i < product.length; i++) {
+            for (int j = i + 1; j < product.length; j++) {
+                if (number[i] < number[j]) {
+                    int x = number[i];
+                    number[i] = number[j];
+                    number[j] = x;
+
+                    String st = product[i];
+                    product[i] = product[j];
+                    product[j] = st;
+                }
+
+                if (number[i] == number[j] && product[i].compareTo(product[j]) > 0) {
+                    String st = product[i];
+                    product[i] = product[j];
+                    product[j] = st;
+                }
+            }
+
+            if (i < topSellingItems.length) {
+                topSellingItems[i] = product[i] + " " + number[i];
+            }
+        }
+
+11.
+        // проверяем можно ли получить лексикографически большее слово
+        for (int i = STR_LENGTH - 1; i > -1; i--) {
+            for (int j = i - 1; j > -1; j--) {
+                if (input.charAt(i) > input.charAt(j)) {
+                    string.setCharAt(j, input.charAt(i));
+                    string.setCharAt(i, input.charAt(j));
+
+                    isLetterGreater = true;
+                    startPoint = j;
+                    break;
+                }
+            }
+
+            if (isLetterGreater) break;
+        }
+
+12.
+        // находим наименьшее из лексикографически больших слов
+        for (int i = startPoint + 1; i < STR_LENGTH; i++) {
+            for (int j = i + 1; j < STR_LENGTH; j++) {
+                if (string.charAt(i) > string.charAt(j)) {
+                    char ch = string.charAt(i);
+                    string.setCharAt(i, string.charAt(j));
+                    string.setCharAt(j, ch);
+                }
+            }
+        }
